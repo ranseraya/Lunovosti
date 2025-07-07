@@ -1,0 +1,52 @@
+import LatestAutomotive from '@/assets/automotive.jpg'
+import LatestEntertaiment from '@/assets/entertaiment.jpg'
+import LatestFood from '@/assets/food.jpg'
+import CardItem from './NewCardItem';
+
+const newsItems = [
+  {
+    title: "Sistem Pengemudian Otonom",
+    date: "Feb 27, 2025",
+    tag: "Automotive",
+    image: LatestAutomotive,
+  },
+  {
+    title: "Musik Jazz lagi Trend di Tahun ini",
+    date: "Mar 09, 2025",
+    tag: "Entertaiment",
+    image: LatestEntertaiment,
+  },
+  {
+    title: "Rekomendasi Makanan untuk Buka Puasa",
+    date: "Mar 05, 2025",
+    tag: "Foods",
+    image: LatestFood,
+  },
+];
+
+const LatestNews = () => {
+    
+  return (
+    <div className='my-10 flex flex-col items-center'>
+        <div className='w-full flex justify-between'>
+          <div className='text-3xl font-bold'>Latest Trend News<br />Good for Curiousiry</div>
+          <button className="bg-[#f8a778] font-bold text-orange-800 text-xl h-10 w-30 rounded-full shadow-md hover:brightness-110 transition">
+          Up To Date
+        </button>
+        </div>
+      
+      {/* Rendering Products */}
+      <div className='my-10 grid grid-cols-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-6'>
+
+        {
+            newsItems.map((item, index) => (
+                <CardItem key={index} title={item.title} date={item.date} tag={item.tag} img={item.image} url={item.url}/>
+            ))
+        }
+      </div>
+      
+    </div>
+  )
+}
+
+export default LatestNews;
