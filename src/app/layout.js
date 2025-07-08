@@ -3,7 +3,7 @@ import { Inter, Jacques_Francois } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import TagListCategory from "../components/TagListCategory";
-import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           <TagListCategory />
           {children}
-          <Contact />
+          <Footer />
         </div>
       </body>
     </html>

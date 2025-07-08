@@ -11,9 +11,9 @@ export default function Home() {
     <div className=''>
       <Hero />
       <LatestNews />
-      <BestAuthor />
       <Ads />
       <LatestNewsCategory />
+      <BestAuthor />
     </div>
   )
 }
