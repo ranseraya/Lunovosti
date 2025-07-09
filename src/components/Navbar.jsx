@@ -15,8 +15,6 @@ const Navbar = () => {
             <Image
               src={logo}
               alt="Luminara Logo"
-              layout="fill"
-              objectFit="contain"
               priority
             />
           </div>
@@ -63,8 +61,6 @@ const Navbar = () => {
           <Image
             src={fotoProfile}
             alt="User Profile"
-            layout="fill"
-            objectFit="cover"
             priority
           />
         </div>
