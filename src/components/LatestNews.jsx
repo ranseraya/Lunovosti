@@ -1,31 +1,8 @@
-import LatestAutomotive from '@/assets/automotive.jpg'
-import LatestEntertaiment from '@/assets/entertaiment.jpg'
-import LatestFood from '@/assets/food.jpg'
+// /src/components/LatestNews.jsx
+
 import CardItem from './NewCardItem';
 
-const newsItems = [
-  {
-    title: "Sistem Pengemudian Otonom",
-    date: "Feb 27, 2025",
-    tag: "Automotive",
-    image: LatestAutomotive,
-  },
-  {
-    title: "Musik Jazz lagi Trend di Tahun ini",
-    date: "Mar 09, 2025",
-    tag: "Entertaiment",
-    image: LatestEntertaiment,
-  },
-  {
-    title: "Rekomendasi Makanan untuk Buka Puasa",
-    date: "Mar 05, 2025",
-    tag: "Foods",
-    image: LatestFood,
-  },
-];
-
-const LatestNews = () => {
-    
+const LatestNews = ({ articles }) => {
   return (
     <div className='my-10 flex flex-col items-center'>
         <div className='w-full flex justify-between'>
@@ -34,19 +11,25 @@ const LatestNews = () => {
           Up To Date
         </button>
         </div>
-      
-      {/* Rendering Products */}
       <div className='my-10 grid grid-cols-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-6'>
-
-        {
-            newsItems.map((item, index) => (
-                <CardItem key={index} title={item.title} date={item.date} tag={item.tag} img={item.image} url={item.url}/>
+        {articles && articles.length > 0 ? (
+            articles.map((item, index) => (
+                <CardItem
+                  key={index}
+                  title={item.title}
+                  date={new Date(item.publishedAt).toLocaleDateString()}
+                  tag="Technology"
+                  img={{ src: item.urlToImage || '/placeholder-image.png' }}
+                  url={item.url}
+                />
             ))
-        }
+        ) : (
+          <p>Berita tidak tersedia saat ini.</p>
+        )}
       </div>
       
     </div>
-  )
+  );
 }
 
 export default LatestNews;
