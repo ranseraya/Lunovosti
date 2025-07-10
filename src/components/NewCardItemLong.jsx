@@ -1,24 +1,18 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
-const CardItemLong = ({title, date, img, url}) => {
-
+const CardItemLong = ({ title, url }) => {
   return (
-    // <Link className=' cursor-pointer' to={`/`}>
-    <div className='flex cursor-pointer border-2 bg-white border-gray-200 w-full h-28 p-2.5 rounded-sm'>
-        <div className='overflow-hidden rounded-md'>
-            <div 
-            className='bg-cover bg-center hover:scale-110 transition ease-in-out w-39 h-21.5 p-2 rounded-md'
-            style={{ backgroundImage: `url(${img.src})` }}
-            ></div>
+    <Link href={url || "#"} target="_blank" className=" cursor-pointer group">
+      <div className="flex cursor-pointer border-2 bg-white border-gray-200 w-full h-10 px-2.5 rounded-sm">
+        <div className="flex flex-col items-start justify-center pr-10">
+          <p className="font-bold text-lg text-ellipsis line-clamp-1 group-hover:text-orange-500 transition-colors duration-300">
+            {title}
+          </p>
         </div>
-        <div className='flex flex-col items-start px-5 justify-center'>
-            <p className='pt-3 font-bold text-lg'>{title}</p>
-            <p className='text-xs text-gray-500 font-medium'>{date}</p>
-        </div>
-        </div>
-    //    </Link>
-  )
-}
+      </div>
+    </Link>
+  );
+};
 
 export default CardItemLong;

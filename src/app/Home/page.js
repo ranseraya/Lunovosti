@@ -4,11 +4,11 @@ import LatestNews from '@/components/LatestNews';
 import BestAuthor from '@/components/BestAuthor';
 import Ads from '@/components/Ads';
 import LatestNewsCategory from '@/components/LatestNewsCategory';
-import TrendingNews from '@/components/TrendingNews';
 import HeadlineNews from '@/components/HeadlineNews';
 
+const apiKey = process.env.GNEWS_API_KEY;
+
 async function getHeadlineNews() {
-  const apiKey = process.env.GNEWS_API_KEY;
   const categories = ["general", "world", "nation", "business", "technology", "entertainment", "sports", "science and health"];
   try {
     const fetchPromises = categories.map(category => {
@@ -77,10 +77,36 @@ async function getTrendingNews() {
   }
 }
 
+async function getNewsPerCategory(){
+  const categories = ["technology", "entertainment", "sports", "general", "world", "business", "science and health"];
+
+  try{
+    const fetchPromises = categories.map(category => {
+      const url = `https://gnews.io/api/v4/search?q=${category}&lang=id&sortby=relevance&max=5&token=${apiKey}`;
+      return fetch(url).then(res => res.json());
+    });
+    const results = await Promise.all(fetchPromises);
+    const newsByCategory = {};
+    results.forEach((result, index) => {
+      const category = categories[index];
+      const articlesData = result.articles || [];
+      newsByCategory[category] = articlesData.map(item => ({
+        title: item.title,
+        urlToImage: item.image,
+        publishedAt: item.publishedAt,
+        url: item.url,
+      }));
+    });
+    return newsByCategory;
+  } catch (error){
+    console.error("Error fetching news from API:", error);
+    return [];
+  }
+}
 export default async function Home() {
   const headlineArticles = await getHeadlineNews();
   const latestArticles = await getLatestNews();
-  const trendingArticles = await getTrendingNews();
+  const categoryArticles = await getNewsPerCategory();
 
   return (
     <div className=''>
@@ -89,8 +115,7 @@ export default async function Home() {
       <HeadlineNews articles={headlineArticles} />
       <LatestNews articles={latestArticles} />
       <Ads />
-      {/* <TrendingNews articles={trendingArticles} /> */}
-      <LatestNewsCategory />
+      <LatestNewsCategory newsData={categoryArticles}/>
       <BestAuthor />
     </div>
   );
