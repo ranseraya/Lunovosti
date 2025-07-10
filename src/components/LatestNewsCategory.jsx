@@ -38,7 +38,6 @@ const LatestNewsCategory = ({ newsData }) => {
           </React.Fragment>
         );
       })}
-      <Ads />
     </div>
   );
 };
