@@ -1,4 +1,3 @@
-// /src/components/LatestNews.jsx
 "use client";
 import CardItem from "./NewCardItem";
 import { useState } from "react";
