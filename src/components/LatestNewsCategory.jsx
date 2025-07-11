@@ -14,7 +14,6 @@ const categoryColors = {
 };
 
 const LatestNewsCategory = ({ newsData }) => {
-  // console.log(newsData);
   return (
     <div className="flex flex-col gap-1">
       {Object.entries(newsData).map(([category, articles], index) => {

@@ -19,30 +19,30 @@ async function getHeadlineNews() {
       return fetch(url).then(res => res.json());
     });
     const results = await Promise.all(fetchPromises);
-     const headlines = results.map((result, index) => {
-        const category = categories[index];
-        const articleData = result.articles && result.articles[0] ? result.articles[0] : null;
+    const headlines = results.map((result, index) => {
+      const category = categories[index];
+      const articleData = result.articles && result.articles[0] ? result.articles[0] : null;
 
-        if (!articleData) {
-          return null;
-        }
+      if (!articleData) {
+        return null;
+      }
 
-        const adaptedArticle = {
-          title: articleData.title,
-          description: articleData.description,
-          url: articleData.url,
-          urlToImage: articleData.image,
-          publishedAt: articleData.publishedAt,
-        };
+      const adaptedArticle = {
+        title: articleData.title,
+        description: articleData.description,
+        url: articleData.url,
+        urlToImage: articleData.image,
+        publishedAt: articleData.publishedAt,
+      };
 
-        return [category, adaptedArticle];
-      })
+      return [category, adaptedArticle];
+    })
       .filter(item => item !== null);
     return headlines;
-}catch (error) {
-  console.error("Error fetching news from API:", error);
-  return [];
-}
+  } catch (error) {
+    console.error("Error fetching news from API:", error);
+    return [];
+  }
 }
 
 async function getLatestNews() {
@@ -82,13 +82,13 @@ async function getTrendingNews() {
   }
 }
 
-async function getNewsPerCategory(){
+async function getNewsPerCategory() {
   const categories = ["technology", "entertainment", "sports", "general", "world", "business", "science and health"];
 
-  try{
+  try {
     await delay(1000);
     const fetchPromises = categories.map(category => {
-      const url = `https://gnews.io/api/v4/search?q=${category}&lang=id&sortby=relevance&max=5&token=${apiKey}`;
+      const url = `https://gnews.io/api/v4/top-headlines?category=${category}&lang=en&max=5&token=${apiKey}`;
       return fetch(url).then(res => res.json());
     });
     const results = await Promise.all(fetchPromises);
@@ -104,7 +104,7 @@ async function getNewsPerCategory(){
       }));
     });
     return newsByCategory;
-  } catch (error){
+  } catch (error) {
     console.error("Error fetching news from API:", error);
     return [];
   }
@@ -112,28 +112,28 @@ async function getNewsPerCategory(){
 
 async function getRecommendationNews() {
   const creativeQueries = [
-  'AI AND (creative OR art)',
-  'startup AND funding AND Asia',
-  '"electric vehicle" OR "smart city"',
-  'cybersecurity AND tips',
-  'biotech AND (health OR farm)',
-  '"mental health" OR "work-life"',
-  'investing OR "financial literacy"',
-  '"sustainable travel" OR ecotourism',
-  'productivity OR "time management"',
-  'nutrition OR "healthy food"',
-  'community OR "social impact"',
-  '"art exhibition" OR "contemporary art"',
-  'SME AND success',
-  '"alternative education" OR "learning methods"',
-  '"climate change" AND adaptation',
-  'science AND discovery',
-  'history AND "origin story"',
-  'hobbies OR "new skill"',
-  'myth OR debunked',
-  'architecture AND unique'
+    'AI AND (creative OR art)',
+    'startup AND funding AND Asia',
+    '"electric vehicle" OR "smart city"',
+    'cybersecurity AND tips',
+    'biotech AND (health OR farm)',
+    '"mental health" OR "work-life"',
+    'investing OR "financial literacy"',
+    '"sustainable travel" OR ecotourism',
+    'productivity OR "time management"',
+    'nutrition OR "healthy food"',
+    'community OR "social impact"',
+    '"art exhibition" OR "contemporary art"',
+    'SME AND success',
+    '"alternative education" OR "learning methods"',
+    '"climate change" AND adaptation',
+    'science AND discovery',
+    'history AND "origin story"',
+    'hobbies OR "new skill"',
+    'myth OR debunked',
+    'architecture AND unique'
   ];
-
+  await delay(1000);
   try {
     const shuffledQueries = creativeQueries.sort(() => 0.5 - Math.random());
     const selectedQueries = shuffledQueries.slice(0, 5);
@@ -146,7 +146,7 @@ async function getRecommendationNews() {
 
     if (!res.ok) {
       const errorData = await res.json();
-      console.error("Gagal mengambil berita rekomendasi:", errorData.errors);
+      console.error("Failed to fetch news:", errorData.errors);
       return [];
     }
 
@@ -182,8 +182,8 @@ export default async function Home() {
       <HeadlineNews articles={headlineArticles} />
       <LatestNews articles={latestArticles} />
       <Ads />
-      <LatestNewsCategory newsData={categoryArticles}/>
-      <RecommendationNews articles={recommendationArticles}/>
+      <LatestNewsCategory newsData={categoryArticles} />
+      <RecommendationNews articles={recommendationArticles} />
       <BestAuthor />
     </div>
   );
