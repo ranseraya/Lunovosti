@@ -1,10 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
+import { slugify } from "@/app/utils/helper";
 
-const CardItemSmall = ({ title, date, tag, img, url }) => {
+const CardItemSmall = ({article, tag}) => {
+  const { title, date, img, url } = article;
+  if (!title) return null;
+  const slug = slugify(title);
   return (
     <Link
-      href={url || "#"}
+      href={{
+        pathname: `/article/${slug}`,
+        query: {
+          title: title,
+          originalUrl: url
+        },
+      }}
       target="_blank"
       className="flex flex-col h-full bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden"
     >
