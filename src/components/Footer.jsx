@@ -51,7 +51,7 @@ const Footer = () => {
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/contact/us" className="hover:text-[#ff8800] transition">
+                <Link href="/contact" className="hover:text-[#ff8800] transition">
                   Contact Us
                 </Link>
               </li>
@@ -61,17 +61,17 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/contact/news" className="hover:text-[#ff8800] transition">
+                <Link href="/contact/newsletters" className="hover:text-[#ff8800] transition">
                   Newsletters
                 </Link>
               </li>
               <li>
-                <Link href="/contact/ads" className="hover:text-[#ff8800] transition">
+                <Link href="/contact/advertise" className="hover:text-[#ff8800] transition">
                   Advertise With Us
                 </Link>
               </li>
               <li>
-                <Link href="/contact/career" className="hover:text-[#ff8800] transition">
+                <Link href="/contact/careers" className="hover:text-[#ff8800] transition">
                   Careers
                 </Link>
               </li>
