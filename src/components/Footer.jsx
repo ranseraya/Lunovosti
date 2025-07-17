@@ -19,27 +19,27 @@ const Footer = () => {
             <h4 className="font-bold text-lg mb-4 text-white">About & Info</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/about/us" className="hover:text-[#ff8800] transition">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/about/staff" className="hover:text-[#ff8800] transition">
                   Newsroom Staff
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/about/ethic" className="hover:text-[#ff8800] transition">
                   Ethical Principles
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/about/sitemap" className="hover:text-[#ff8800] transition">
                   Sitemap
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/about/accessbility" className="hover:text-[#ff8800] transition">
                   Accessbility
                 </Link>
               </li>
@@ -51,27 +51,27 @@ const Footer = () => {
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/contact/us" className="hover:text-[#ff8800] transition">
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/contact/tips" className="hover:text-[#ff8800] transition">
                   News Tips
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/contact/news" className="hover:text-[#ff8800] transition">
                   Newsletters
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/contact/ads" className="hover:text-[#ff8800] transition">
                   Advertise With Us
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/contact/career" className="hover:text-[#ff8800] transition">
                   Careers
                 </Link>
               </li>
@@ -113,27 +113,27 @@ const Footer = () => {
             <h4 className="font-bold text-lg mb-4 text-white">Policies</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/policies/terms" className="hover:text-[#ff8800] transition">
                   Terms & Conditions
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/policies/privacy" className="hover:text-[#ff8800] transition">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/policies/cookie" className="hover:text-[#ff8800] transition">
                   Cookie Policy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/policies/subs" className="hover:text-[#ff8800] transition">
                   Subscription Terms
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#ff8800] transition">
+                <Link href="/policies/ad" className="hover:text-[#ff8800] transition">
                   Ad Choices
                 </Link>
               </li>
