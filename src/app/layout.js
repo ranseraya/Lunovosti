@@ -2,7 +2,6 @@
 import { Inter, Jacques_Francois } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
-import TagListCategory from "../components/TagListCategory";
 import Footer from "@/components/Footer";
 
 const inter = Inter({
@@ -30,7 +29,6 @@ export default function RootLayout({ children }) {
       >
         <div className="max-w-screen-xl mx-auto px-2 md:px-23">
           <Navbar />
-          <TagListCategory />
           {children}
           <Footer />
         </div>

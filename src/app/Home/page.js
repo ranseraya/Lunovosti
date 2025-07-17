@@ -6,6 +6,7 @@ import Ads from '@/components/Ads';
 import LatestNewsCategory from '@/components/LatestNewsCategory';
 import HeadlineNews from '@/components/HeadlineNews';
 import RecommendationNews from '@/components/RecommendationNews';
+import TagListCategory from '@/components/TagListCategory';
 
 const apiKey = process.env.GNEWS_API_KEY;
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -177,6 +178,7 @@ export default async function Home() {
 
   return (
     <div className=''>
+      <TagListCategory />
       <Hero />
       <Ads />
       <HeadlineNews articles={headlineArticles} />
