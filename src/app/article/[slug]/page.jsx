@@ -1,49 +1,64 @@
 import React from "react";
 import Image from "next/image";
+import prisma from "../../../libs/prisma";
 
-async function fetchArticleByTitle(title) {
-  const apiKey = process.env.GNEWS_API_KEY;
-  const encodedTitle = encodeURIComponent(`"${title}"`);
-  const url = `https://gnews.io/api/v4/search?q=${encodedTitle}&lang=en&token=${apiKey}`;
-
+async function fetchArticleBySlug(slug) {
   try {
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.articles ? data.articles[0] : null;
+    const article = await prisma.articles.findUnique({
+      where: {
+        slug: slug,
+      },
+      include: {
+        authors: true,
+        categories: true,
+      },
+    });
+    return article;
   } catch (error) {
-    console.error("Fetch article by title failed:", error);
+    console.error(`Failed to fetch article with slug ${slug}:`, error);
     return null;
   }
 }
 
-
-export default async function ArticlePage ({params, searchParams}){
-  const queryTitle = searchParams.title;
-  const article = await fetchArticleByTitle(queryTitle);
+export default async function ArticlePage({ params }) {
+  const { slug } = params;
+  const article = await fetchArticleBySlug(slug);
 
   if (!article) {
-    return <div>Article not found!/</div>;
+    return <div>Article not found!</div>;
   }
 
-  const { title, image, publishedAt, content, description } = article;
-  const proxyImageUrl = image ? `/api/image?url=${encodeURIComponent(image)}` : null;
+  const { title, featured_image_url, published_at, content, excerpt, authors } = article;
 
   return (
     <div className="container mx-auto px-4 my-10 max-w-4xl">
       <h1 className="text-4xl font-extrabold mb-4">{title}</h1>
-      <p className="text-gray-500 mb-6">
-        Published on {new Date(publishedAt).toLocaleDateString()}
-      </p>
-      {proxyImageUrl && (
-        <div className="relative w-full h-96 mb-8">
-          <Image src={proxyImageUrl} alt={title} fill style={{ objectFit: 'cover' }} />
+      <div className="text-gray-500 mb-6 flex items-center">
+        <span>Write by: <strong>{authors.name}</strong></span>
+        <span className="mx-2">|</span>
+        <span>
+          Published on: {new Date(published_at).toLocaleDateString('id-ID', {
+            year: 'numeric', month: 'long', day: 'numeric'
+          })}
+        </span>
+      </div>
+
+      {featured_image_url && (
+        <div className="relative w-full h-96 mb-8 rounded-lg overflow-hidden">
+          <Image
+            src={featured_image_url}
+            alt={title}
+            fill
+            style={{ objectFit: 'cover' }}
+            priority
+          />
         </div>
       )}
+
       <article className="prose lg:prose-xl max-w-none">
-        <p className="lead">{description}</p>
-        <p>{content}</p>
+        <p className="lead font-semibold text-gray-600">{excerpt}</p>
+        <div dangerouslySetInnerHTML={{ __html: content.replace(/\n/g, '<br />') }} />
       </article>
     </div>
   );
-};
+}

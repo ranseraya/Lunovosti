@@ -26,10 +26,10 @@ const LatestNewsCategory = ({ newsData }) => {
             <ContainerCategory
               title1={category}
               title2={firstArticle.title}
-              date={new Date(firstArticle.publishedAt).toLocaleDateString(
+              date={new Date(firstArticle.updated_at).toLocaleDateString(
                 "id-ID"
               )}
-              img={firstArticle.urlToImage}
+              img={firstArticle.featured_image_url}
               color={categoryColors[category] || categoryColors.default}
               articles={articles}
             />

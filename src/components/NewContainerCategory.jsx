@@ -15,7 +15,9 @@ const ContainerCategory = ({ title1, title2, date, img, color, articles}) => {
         <div
           className="relative w-[400px] h-[220px] bg-cover bg-center flex flex-col justify-center items-end p-6 text-white overflow-hidden"
         >
-          <Image src={img} alt={title2} fill priority className="object-cover" />
+          {img && (
+            <Image src={img} alt={title2} fill className="object-cover" />
+          )}
           <div className="font-bold text-lg text-white absolute text-ellipsis line-clamp-2 ml-2 mr-10 p-1 px-2 bottom-4 bg-black">{title2}</div>
           <p className="text-white font-normal text-sm absolute top-2 right-6 px-1 bg-amber-600">{date}</p>
         </div>
