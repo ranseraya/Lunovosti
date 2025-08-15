@@ -15,7 +15,7 @@ const RecommendationNews = ({ articles }) => {
             <CardItemMedium
               key={index}
               title={article.title}
-              date={new Date(article.updated_at).toLocaleDateString()}
+              date={new Date(article.published_at).toLocaleDateString()}
               img={article.featured_image_url}
               url={article.url}
             />

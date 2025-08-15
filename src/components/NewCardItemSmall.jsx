@@ -1,10 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { slugify } from "@/app/utils/helper";
 
 const CardItemSmall = ({ article, tag }) => {
-  console.log(article[0]);
-  const { title, updated_at, featured_image_url, slug } = article;
+  const { title, published_at, featured_image_url, slug } = article;
   if (!article) {
     return null;
   }
@@ -31,7 +29,7 @@ const CardItemSmall = ({ article, tag }) => {
             {title}
           </p>
           <div className="w-full flex justify-between">
-            <p className="text-xs text-gray-500 font-medium">{new Date(updated_at).toLocaleDateString("id-ID")}</p>
+            <p className="text-xs text-gray-500 font-medium">{new Date(published_at).toLocaleDateString("id-ID")}</p>
             <p className="text-[10px] text-white bg-blue-700 flex justify-center items-center px-0.5 rounded-xs">
               {tag}
             </p>

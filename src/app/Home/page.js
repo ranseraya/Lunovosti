@@ -15,7 +15,7 @@ import prisma from '../../libs/prisma';
 
 async function getHeadlineNews() {
   try {
-    const categories = await prisma.categories.findMany(); 
+    const categories = await prisma.categories.findMany();
     const headlines = await Promise.all(
       categories.map(async (category) => {
         const article = await prisma.articles.findFirst({
@@ -64,19 +64,19 @@ async function getNewsPerCategory() {
     const categories = await prisma.categories.findMany();
     const newsByCategory = {};
     await Promise.all(
-        categories.map(async (category) => {
-            const articles = await prisma.articles.findMany({
-                where: {
-                    category_id: category.id,
-                    status: 'published',
-                },
-                orderBy: {
-                    published_at: 'desc',
-                },
-                take: 5,
-            });
-            newsByCategory[category.name] = articles;
-        })
+      categories.map(async (category) => {
+        const articles = await prisma.articles.findMany({
+          where: {
+            category_id: category.id,
+            status: 'published',
+          },
+          orderBy: {
+            published_at: 'desc',
+          },
+          take: 5,
+        });
+        newsByCategory[category.name] = articles;
+      })
     );
     return newsByCategory;
   } catch (error) {
@@ -128,10 +128,17 @@ async function getTrendingNews() {
 }
 
 export default async function Home() {
-  const headlineArticles = await getHeadlineNews();
-  const latestArticles = await getLatestNews();
-  const categoryArticles = await getNewsPerCategory();
-  const recommendationArticles = await getRecommendationNews();
+  const [
+    headlineArticles,
+    latestArticles,
+    categoryArticles,
+    recommendationArticles,
+  ] = await Promise.all([
+    getHeadlineNews(),
+    getLatestNews(),
+    getNewsPerCategory(),
+    getRecommendationNews(),
+  ]);
 
   return (
     <div className=''>
