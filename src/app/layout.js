@@ -3,6 +3,7 @@ import { Inter, Jacques_Francois } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "@/components/Footer";
+import AuthProvider from "@/components/AuthProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -27,11 +28,13 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
         className={`${inter.variable} ${jacques.variable} antialiased `}
       >
+        <AuthProvider>
         <div className="max-w-screen-xl mx-auto px-2 md:px-23">
           <Navbar />
           {children}
           <Footer />
         </div>
+        </AuthProvider>
       </body>
     </html>
   );
