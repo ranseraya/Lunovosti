@@ -1,7 +1,9 @@
 import React from "react";
 import Image from "next/image";
+import Link from 'next/link';
 import prisma from "../../../libs/prisma";
 import CommentSection from "@/components/CommentSection";
+import RelatedArticles from "@/components/RelatedArticles";
 
 async function fetchArticleBySlug(slug) {
   try {
@@ -17,11 +19,9 @@ async function fetchArticleBySlug(slug) {
 
     if (!article) return null;
 
-    const serializedArticle = {
-      ...article,
-      id: article.id.toString(),
-      author_id: article.author_id.toString(),
-    };
+    const serializedArticle = JSON.parse(JSON.stringify(article, (key, value) =>
+        typeof value === 'bigint' ? value.toString() : value
+    ));
 
     return serializedArticle;
   } catch (error) {
@@ -38,13 +38,18 @@ export default async function ArticlePage({ params }) {
     return <div>Article not found!</div>;
   }
 
-  const { id, title, featured_image_url, published_at, content, excerpt, authors } = article;
+  const { id, title, featured_image_url, published_at, content, excerpt, authors, category_id } = article;
 
   return (
-    <div className="container mx-auto px-4 my-10 max-w-4xl">
+    <div className="container mx-auto px-4 my-10 max-w-5xl">
       <h1 className="text-4xl font-extrabold mb-4">{title}</h1>
       <div className="text-gray-500 mb-6 flex items-center">
-        <span>Write by: <strong>{authors.name}</strong></span>
+        <span>
+          Write by:
+          <Link href={`/author/${authors.slug}`} className="hover:text-orange-500 transition">
+             <strong>{authors.name}</strong>
+          </Link>
+        </span>
         <span className="mx-2">|</span>
         <span>
           Published on: {new Date(published_at).toLocaleDateString('id-ID', {
@@ -71,6 +76,8 @@ export default async function ArticlePage({ params }) {
       </article>
 
       <CommentSection articleId={id} />
+
+      <RelatedArticles categoryId={category_id} currentArticleId={id} />
     </div>
   );
 }
