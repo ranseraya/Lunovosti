@@ -10,9 +10,6 @@ import TagListCategory from '@/components/TagListCategory';
 import prisma from '../../libs/prisma';
 
 
-// const apiKey = process.env.GNEWS_API_KEY;
-// const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
 async function getHeadlineNews() {
   try {
     const categories = await prisma.categories.findMany();
@@ -109,23 +106,6 @@ async function getRecommendationNews() {
   }
 }
 
-async function getTrendingNews() {
-  try {
-    await delay(1000);
-    const res = await fetch(`https://gnews.io/api/v4/top-headlines?sortby=relevance&lang=us&country=us&token=${process.env.GNEWS_API_KEY}`, {
-      next: { revalidate: 3600 }
-    });
-    if (!res.ok) {
-      console.error("Failed to fetch news:", res.status);
-      return [];
-    }
-    const data = await res.json();
-    return data.articles;
-  } catch (error) {
-    console.error("Error fetching news from API:", error);
-    return [];
-  }
-}
 
 export default async function Home() {
   const [

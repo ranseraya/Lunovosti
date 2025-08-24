@@ -5,6 +5,7 @@ import logo from "@/assets/LuminaraLogo.png";
 import fotoProfile from "@/assets/profile.jpg";
 import { Search, BellIcon } from "lucide-react";
 import Link from "next/link";
+import AuthButton from "./AuthButton";
 
 const Navbar = () => {
   return (
@@ -53,17 +54,7 @@ const Navbar = () => {
         >
           <BellIcon size={20} className="text-gray-600" />
         </div>
-
-        <div
-          className='relative h-10 w-10 border border-gray-400 rounded-full overflow-hidden cursor-pointer'
-          aria-label="User profile picture"
-        >
-          <Image
-            src={fotoProfile}
-            alt="User Profile"
-            priority
-          />
-        </div>
+        <AuthButton />
       </div>
     </nav>
   );

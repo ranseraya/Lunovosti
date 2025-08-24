@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
         className={`${inter.variable} ${jacques.variable} antialiased `}
       >
         <AuthProvider>
-        <div className="max-w-screen-xl mx-auto px-2 md:px-23">
+        <div className="max-w-screen-xl mx-auto px-2 md:px-13"> {/* first layout => md:px-23  */}
           <Navbar />
           {children}
           <Footer />
