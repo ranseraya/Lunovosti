@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import prisma from "../../../libs/prisma";
+import CommentSection from "@/components/CommentSection";
 
 async function fetchArticleBySlug(slug) {
   try {
@@ -13,7 +14,16 @@ async function fetchArticleBySlug(slug) {
         categories: true,
       },
     });
-    return article;
+
+    if (!article) return null;
+
+    const serializedArticle = {
+      ...article,
+      id: article.id.toString(),
+      author_id: article.author_id.toString(),
+    };
+
+    return serializedArticle;
   } catch (error) {
     console.error(`Failed to fetch article with slug ${slug}:`, error);
     return null;
@@ -28,7 +38,7 @@ export default async function ArticlePage({ params }) {
     return <div>Article not found!</div>;
   }
 
-  const { title, featured_image_url, published_at, content, excerpt, authors } = article;
+  const { id, title, featured_image_url, published_at, content, excerpt, authors } = article;
 
   return (
     <div className="container mx-auto px-4 my-10 max-w-4xl">
@@ -59,6 +69,8 @@ export default async function ArticlePage({ params }) {
         <p className="lead font-semibold text-gray-600">{excerpt}</p>
         <div dangerouslySetInnerHTML={{ __html: content.replace(/\n/g, '<br />') }} />
       </article>
+
+      <CommentSection articleId={id} />
     </div>
   );
 }

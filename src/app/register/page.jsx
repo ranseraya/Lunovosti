@@ -48,6 +48,7 @@ export default function RegisterPage() {
       <form onSubmit={handleSubmit} className="p-8 bg-white shadow-md rounded-lg w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-6 text-center">Create new account</h2>
         {error && <p className="bg-red-100 text-red-700 p-3 mb-4 rounded">{error}</p>}
+        {successMessage && <p className="bg-green-100 text-green-700 p-3 mb-4 rounded">{successMessage}</p>}
 
         <div className="mb-4">
           <label className="block text-gray-700 mb-2" htmlFor="username">Username</label>
