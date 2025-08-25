@@ -2,7 +2,6 @@ import React from "react";
 import CardItemSmall from "./NewCardItemSmall";
 
 const HeadlineNews = ({articles}) => {
-  console.log(articles[0]);
   return (
     <div className="my-10 flex flex-col items-center">
       <div className="w-full flex justify-between">

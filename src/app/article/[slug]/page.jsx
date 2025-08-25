@@ -31,7 +31,7 @@ async function fetchArticleBySlug(slug) {
 }
 
 export default async function ArticlePage({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
   const article = await fetchArticleBySlug(slug);
 
   if (!article) {

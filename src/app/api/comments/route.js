@@ -65,16 +65,33 @@ export async function POST(request) {
         content,
         parent_comment_id: parent_comment_id ? BigInt(parent_comment_id) : null,
       },
+      include: {
+        users: {
+          select: {
+            username: true
+          }
+        }
+      }
     });
 
-    const serializedComment = {
-        ...newComment,
-        id: newComment.id.toString(),
-        article_id: newComment.article_id.toString(),
-        user_id: newComment.user_id.toString(),
-        parent_comment_id: newComment.parent_comment_id ? newComment.parent_comment_id.toString() : null,
-      };
+    if (parent_comment_id) {
+      const parentComment = await prisma.comments.findUnique({
+        where: { id: BigInt(parent_comment_id) }
+      });
 
+      if (parentComment && parentComment.user_id !== BigInt(session.user.id)) {
+        await prisma.notification.create({
+          data: {
+            user_id: parentComment.user_id,
+            article_id: BigInt(article_id),
+            message: `${session.user.username} replied to your comment.`
+          }
+        });
+      }
+    }
+    const serializedComment = JSON.parse(JSON.stringify(newComment, (key, value) =>
+        typeof value === 'bigint' ? value.toString() : value
+    ));
     return NextResponse.json(serializedComment, { status: 201 });
   } catch (error) {
     console.error("Error creating comment:", error);
