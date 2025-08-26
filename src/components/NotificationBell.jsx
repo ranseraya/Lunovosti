@@ -1,9 +1,20 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { useSession } from 'next-auth/react';
-import { BellIcon } from 'lucide-react';
-import Link from 'next/link';
+import { useState, useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
+import { BellIcon, Newspaper, UserPlus } from "lucide-react";
+import Link from "next/link";
+
+const getIconForType = (type) => {
+  switch (type) {
+    case "NEW_ARTICLE":
+      return <Newspaper className="h-5 w-5 text-blue-500" />;
+    case "FOLLOW":
+      return <UserPlus className="h-5 w-5 text-green-500" />;
+    default:
+      return null;
+  }
+};
 
 export default function NotificationBell() {
   const { data: session } = useSession();
@@ -11,17 +22,17 @@ export default function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   const fetchNotifications = async () => {
     if (!session) return;
     try {
-      const response = await fetch('/api/notifications');
+      const response = await fetch("/api/notifications");
       if (response.ok) {
         setNotifications(await response.json());
       }
     } catch (error) {
-      console.error('Failed to fetch notifications:', error);
+      console.error("Failed to fetch notifications:", error);
     }
   };
 
@@ -34,8 +45,8 @@ export default function NotificationBell() {
   const handleBellClick = async () => {
     setIsOpen(!isOpen);
     if (!isOpen && unreadCount > 0) {
-      await fetch('/api/notifications', { method: 'PUT' });
-      setNotifications(notifications.map(n => ({ ...n, read: true })));
+      await fetch("/api/notifications", { method: "PUT" });
+      setNotifications(notifications.map((n) => ({ ...n, read: true })));
     }
   };
 
@@ -45,19 +56,19 @@ export default function NotificationBell() {
         setIsOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   if (!session) {
     return (
-        <div
+      <div
         className="h-10 w-10 border border-gray-400 flex justify-center items-center rounded-full overflow-hidden cursor-pointer hover:bg-gray-100 transition"
         aria-label="Notifications"
       >
         <BellIcon size={20} className="text-gray-600" />
       </div>
-    )
+    );
   }
 
   return (
@@ -80,19 +91,33 @@ export default function NotificationBell() {
           <div className="p-2 font-bold border-b">Notifications</div>
           <div className="max-h-96 overflow-y-auto">
             {notifications.length > 0 ? (
-              notifications.map(n => (
-                <Link key={n.id} href={`/article/${n.article.slug}`} passHref>
-                  <div 
-                    onClick={() => setIsOpen(false)}
-                    className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  >
-                    <p>{n.message}</p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      {new Date(n.created_at).toLocaleString()}
-                    </p>
-                  </div>
-                </Link>
-              ))
+              notifications.map((n) => {
+                const href =
+                  n.type === "NEW_ARTICLE" || n.type === "COMMENT_REPLY"
+                    ? `/article/${n.article?.slug}`
+                    : "#";
+
+                return (
+                  <Link key={n.id} href={href} passHref>
+                    <div
+                      onClick={() => href !== "#" && setIsOpen(false)}
+                      className={`flex items-start gap-3 px-4 py-3 text-sm hover:bg-gray-100 ${
+                        href === "#" ? "cursor-default" : "cursor-pointer"
+                      }`}
+                    >
+                      <div className="flex-shrink-0 mt-1">
+                        {getIconForType(n.type)}
+                      </div>
+                      <div className="flex-grow">
+                        <p className="text-gray-800">{n.message}</p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {new Date(n.created_at).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })
             ) : (
               <p className="p-4 text-sm text-gray-500">No new notifications.</p>
             )}

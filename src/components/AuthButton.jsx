@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { useSession, signIn, signOut } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { useState, useEffect, useRef } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
 
-import fotoProfile from '@/assets/profile.jpg';
+import fotoProfile from "@/assets/profile.jpg";
 
 const getDashboardPathForRole = (role) => {
-  if (!role) return '/';
+  if (!role) return "/";
   const userRole = role.toUpperCase();
-  if (['ADMIN', 'EDITOR', 'AUTHOR'].includes(userRole)) {
-    return '/admin/dashboard';
+  if (["ADMIN", "EDITOR", "AUTHOR"].includes(userRole)) {
+    return "/admin/dashboard";
   }
-  return '/Home';
+  return "/Home";
 };
 
 export default function AuthButton() {
@@ -27,14 +27,16 @@ export default function AuthButton() {
         setIsOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  if (status === 'loading') {
-    return <div className="h-10 w-10 bg-gray-200 rounded-full animate-pulse"></div>;
+  if (status === "loading") {
+    return (
+      <div className="h-10 w-10 bg-gray-200 rounded-full animate-pulse"></div>
+    );
   }
 
   if (session) {
@@ -50,7 +52,7 @@ export default function AuthButton() {
             src={session.user?.image || fotoProfile}
             alt={session.user?.name || "User Profile"}
             fill
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: "cover" }}
           />
         </button>
 
@@ -58,7 +60,7 @@ export default function AuthButton() {
           <div className="dropdown-menu absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10">
             <div className="px-4 py-3">
               <p className="text-sm font-medium text-gray-900 truncate">
-                {session.user?.name || 'User'}
+                {session.user?.name || "User"}
               </p>
               <p className="text-sm text-gray-500 truncate">
                 {session.user?.email}
@@ -66,30 +68,49 @@ export default function AuthButton() {
             </div>
             <div className="py-1">
               <Link href={dashboardPath} passHref>
-                <span onClick={() => setIsOpen(false)} className="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                <span
+                  onClick={() => setIsOpen(false)}
+                  className="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                >
                   Dashboard
                 </span>
               </Link>
             </div>
             <div className="py-1">
-              <Link href={'/profile'} passHref>
-                <span onClick={() => setIsOpen(false)} className="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+              <Link href={"/profile"} passHref>
+                <span
+                  onClick={() => setIsOpen(false)}
+                  className="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                >
                   Profile
                 </span>
               </Link>
             </div>
+            <div className="py-1 border-t border-gray-200">
+              <Link href={"/profile/bookmarks"} passHref>
+                <span
+                  onClick={() => setIsOpen(false)}
+                  className="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                >
+                  My Bookmarks
+                </span>
+              </Link>
+            </div>
             <div className="py-1">
-              <Link href={'/help'} passHref>
-                <span onClick={() => setIsOpen(false)} className="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+              <Link href={"/help"} passHref>
+                <span
+                  onClick={() => setIsOpen(false)}
+                  className="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                >
                   Help
                 </span>
               </Link>
             </div>
             <div className="py-1 border-t border-gray-200">
-              <span 
+              <span
                 onClick={() => {
                   setIsOpen(false);
-                  signOut({ callbackUrl: '/Home' });
+                  signOut({ callbackUrl: "/Home" });
                 }}
                 className="dropdown-item block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer"
               >

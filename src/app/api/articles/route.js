@@ -60,6 +60,27 @@ export async function POST(request) {
       }
     });
 
+    if (newArticle.status === 'published') {
+        const author = await prisma.authors.findUnique({ where: { id: newArticle.author_id }});
+        if (author && author.user_id) {
+            const followers = await prisma.follow.findMany({
+                where: { following_id: author.user_id },
+            });
+
+            const notifications = followers.map(follow => ({
+                user_id: follow.follower_id,
+                article_id: newArticle.id,
+                message: `${author.name} published a new article: "${newArticle.title}"`,
+                type: 'NEW_ARTICLE',
+            }));
+
+            if (notifications.length > 0) {
+                await prisma.notification.createMany({
+                    data: notifications,
+                });
+            }
+        }
+    }
     return NextResponse.json(serializeBigInts(newArticle), { status: 201 });
   } catch (error) {
     console.log("Error while creating article: ", error);

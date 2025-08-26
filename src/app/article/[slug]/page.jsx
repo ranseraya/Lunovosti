@@ -5,6 +5,7 @@ import prisma from "../../../libs/prisma";
 import CommentSection from "@/components/CommentSection";
 import RelatedArticles from "@/components/RelatedArticles";
 import { serializeBigInts } from "@/app/utils/serialize";
+import ArticleActions from "@/components/ArticleActions";
 
 async function fetchArticleBySlug(slug) {
   try {
@@ -54,7 +55,7 @@ export default async function ArticlePage({ params }) {
           })}
         </span>
       </div>
-
+      <ArticleActions articleId={id} />
       {featured_image_url && (
         <div className="relative w-full h-96 mb-8 rounded-lg overflow-hidden">
           <Image
