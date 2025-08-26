@@ -1,34 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../../libs/prisma';
-
-// Fungsi untuk serialisasi BigInt
-function serializeBigInts(obj) {
-  if (obj === null || typeof obj !== 'object') {
-    return obj;
-  }
-
-  if (typeof obj.toJSON === 'function') {
-      return obj.toJSON();
-  }
-
-  if (Array.isArray(obj)) {
-    return obj.map(serializeBigInts);
-  }
-
-  const newObj = {};
-  for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      const value = obj[key];
-      if (typeof value === 'bigint') {
-        newObj[key] = value.toString();
-      } else {
-        newObj[key] = serializeBigInts(value);
-      }
-    }
-  }
-  return newObj;
-}
-
+import { serializeBigInts } from '@/app/utils/serialize';
 
 export async function GET(request, { params }) {
   const { slug } = params;
@@ -60,10 +32,8 @@ export async function GET(request, { params }) {
     if (!author) {
       return NextResponse.json({ error: 'Author not found' }, { status: 404 });
     }
-    
-    const serializedAuthor = serializeBigInts(author);
 
-    return NextResponse.json(serializedAuthor);
+    return NextResponse.json(serializeBigInts(author));
   } catch (error) {
     console.error(`Error fetching author ${slug}:`, error);
     return NextResponse.json({ error: 'Server Error' }, { status: 500 });

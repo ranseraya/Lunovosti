@@ -2,12 +2,7 @@ import { NextResponse } from 'next/server';
 import prisma from '../../../libs/prisma';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]/route';
-
-const serializeBigInts = (obj) => {
-    return JSON.parse(JSON.stringify(obj, (key, value) =>
-        typeof value === 'bigint' ? value.toString() : value
-    ));
-};
+import { serializeBigInts } from '@/app/utils/serialize';
 
 export async function GET() {
     const session = await getServerSession(authOptions);
@@ -28,6 +23,7 @@ export async function GET() {
         }
       }
     });
+
     return NextResponse.json(serializeBigInts(notifications));
   } catch (error) {
     console.error("Error fetching notifications:", error);
@@ -43,9 +39,9 @@ export async function PUT() {
 
     try {
       await prisma.notification.updateMany({
-        where: { 
+        where: {
             user_id: BigInt(session.user.id),
-            read: false 
+            read: false
         },
         data: { read: true },
       });

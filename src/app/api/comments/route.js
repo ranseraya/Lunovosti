@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import prisma from '../../../libs/prisma';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]/route';
+import { serializeBigInts } from '@/app/utils/serialize';
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -28,16 +29,7 @@ export async function GET(request) {
       },
     });
 
-    const serializedComments = comments.map(comment => ({
-      ...comment,
-      id: comment.id.toString(),
-      article_id: comment.article_id.toString(),
-      user_id: comment.user_id ? comment.user_id.toString() : null,
-      parent_comment_id: comment.parent_comment_id ? comment.parent_comment_id.toString() : null,
-    }));
-
-
-    return NextResponse.json(serializedComments);
+    return NextResponse.json(serializeBigInts(comments));
   } catch (error) {
     console.error("Error fetching comments:", error);
     return NextResponse.json({ error: 'Server Error' }, { status: 500 });
@@ -89,10 +81,8 @@ export async function POST(request) {
         });
       }
     }
-    const serializedComment = JSON.parse(JSON.stringify(newComment, (key, value) =>
-        typeof value === 'bigint' ? value.toString() : value
-    ));
-    return NextResponse.json(serializedComment, { status: 201 });
+
+    return NextResponse.json(serializeBigInts(newComment), { status: 201 });
   } catch (error) {
     console.error("Error creating comment:", error);
     return NextResponse.json({ error: 'Server Error' }, { status: 500 });

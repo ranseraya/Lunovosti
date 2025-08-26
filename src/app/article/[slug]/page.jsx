@@ -4,6 +4,7 @@ import Link from 'next/link';
 import prisma from "../../../libs/prisma";
 import CommentSection from "@/components/CommentSection";
 import RelatedArticles from "@/components/RelatedArticles";
+import { serializeBigInts } from "@/app/utils/serialize";
 
 async function fetchArticleBySlug(slug) {
   try {
@@ -19,11 +20,7 @@ async function fetchArticleBySlug(slug) {
 
     if (!article) return null;
 
-    const serializedArticle = JSON.parse(JSON.stringify(article, (key, value) =>
-        typeof value === 'bigint' ? value.toString() : value
-    ));
-
-    return serializedArticle;
+    return serializeBigInts(article);
   } catch (error) {
     console.error(`Failed to fetch article with slug ${slug}:`, error);
     return null;

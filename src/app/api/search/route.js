@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../libs/prisma';
+import { serializeBigInts } from '@/app/utils/serialize';
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -17,11 +18,13 @@ export async function GET(request) {
           {
             title: {
               contains: query,
+              mode: 'insensitive',
             },
           },
           {
             content: {
               contains: query,
+              mode: 'insensitive',
             },
           },
         ],
@@ -35,18 +38,7 @@ export async function GET(request) {
       },
     });
 
-    const serializedArticles = articles.map(article => ({
-      ...article,
-      id: article.id.toString(),
-      author_id: article.author_id.toString(),
-      authors: {
-        ...article.authors,
-        id: article.authors.id.toString(),
-        user_id: article.authors.user_id ? article.authors.user_id.toString() : null,
-      }
-    }));
-
-    return NextResponse.json(serializedArticles);
+    return NextResponse.json(serializeBigInts(articles));
   } catch (error) {
     console.error("Error during article search:", error);
     return NextResponse.json({ error: 'Server Error' }, { status: 500 });

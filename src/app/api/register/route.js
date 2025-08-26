@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../libs/prisma';
 import bcrypt from 'bcryptjs';
+import { serializeBigInts } from '@/app/utils/serialize';
 
 export async function POST(request) {
     try {
@@ -47,12 +48,8 @@ export async function POST(request) {
         });
 
         const { password_hash, ...userWithoutPassword } = newUser;
-        const safeUser = {
-            ...userWithoutPassword,
-            id: userWithoutPassword.id.toString(),
-        };
-        return NextResponse.json(safeUser, { status: 201 });
 
+        return NextResponse.json(serializeBigInts(userWithoutPassword), { status: 201 });
     } catch (error) {
         console.error("Error during registration:", error);
         return NextResponse.json(

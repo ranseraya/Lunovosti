@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]/route';
 import prisma from '../../../libs/prisma';
+import { serializeBigInts } from '@/app/utils/serialize';
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -24,17 +25,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
     }
 
-    const safeUserProfile = {
-      ...userProfile,
-      id: userProfile.id.toString(),
-      authors: userProfile.authors ? {
-        ...userProfile.authors,
-        id: userProfile.authors.id.toString(),
-        user_id: userProfile.authors.user_id ? userProfile.authors.user_id.toString() : null
-      } : null
-    };
-
-    return NextResponse.json(safeUserProfile);
+    return NextResponse.json(serializeBigInts(userProfile));
   } catch (error) {
     console.error("Error while fetching data profile:", error);
     return NextResponse.json({ error: 'Server Error' }, { status: 500 });

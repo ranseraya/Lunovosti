@@ -2,6 +2,8 @@ import prisma from "@/libs/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]/route';
+import { serializeBigInts } from "@/app/utils/serialize";
+import { slugify } from "@/app/utils/helper";
 
 export async function GET() {
   try {
@@ -15,17 +17,7 @@ export async function GET() {
       },
     });
 
-    const articles = articlesFromDb.map(article => ({
-      ...article,
-      id: article.id.toString(),
-      author_id: article.author_id.toString(),
-      authors: {
-        ...article.authors,
-        id: article.authors.id.toString(),
-        user_id: article.authors.user_id ? article.authors.user_id.toString() : null,
-      }
-    }));
-    return NextResponse.json(articles);
+    return NextResponse.json(serializeBigInts(articlesFromDb));
   } catch (error) {
     console.error("Error while fetching article:", error);
     return NextResponse.json(
@@ -42,18 +34,9 @@ export async function POST(request) {
     if (!session || !['ADMIN', 'EDITOR', 'AUTHOR'].includes(session.user.role)) {
       return NextResponse.json({ error: 'Access denied' }, { status: 403 });
     }
-    const loggedUserId = 1;
-    const loggedUserRole = "AUTHOR";
-
-    if (!["ADMIN", "AUTHOR", "EDITOR"].includes(loggedUserRole.toLocaleUpperCase())) {
-      return NextResponse.json(
-        { error: "You do not have permission to create articles" },
-        { status: 403 }
-      );
-    };
 
     const data = await request.json();
-    const { title, content, excerpt, category_id, author_id } = data;
+    const { title, content, excerpt, category_id, author_id, status } = data;
 
     if (!title) {
       return NextResponse.json(
@@ -62,16 +45,8 @@ export async function POST(request) {
       )
     }
 
-    const slug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
-    let status = "DRAFT";
-    let published_at = null;
+    const slug = slugify(title);
 
-    if (['ADMIN', 'EDITOR'].includes(loggedInUserRole.toUpperCase())) {
-      if (data.status && data.status.toUpperCase() === 'PUBLISHED') {
-        status = 'PUBLISHED';
-        published_at = new Date();
-      }
-    }
     const newArticle = await prisma.articles.create({
       data: {
         title: title,
@@ -83,8 +58,9 @@ export async function POST(request) {
         status: status || 'DRAFT',
         published_at: status === 'PUBLISHED' ? new Date() : null,
       }
-    })
-    return NextResponse.json(newArticle, { status: 201 });
+    });
+
+    return NextResponse.json(serializeBigInts(newArticle), { status: 201 });
   } catch (error) {
     console.log("Error while creating article: ", error);
     return NextResponse.json(

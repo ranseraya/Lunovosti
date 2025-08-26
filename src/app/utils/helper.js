@@ -4,7 +4,7 @@ export const slugify = (text) => {
     .toString()
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, '-')           // Ganti spasi dengan -
-    .replace(/[^\w\-]+/g, '')       // Hapus semua karakter non-kata kecuali -
-    .replace(/\-\-+/g, '-');        // Ganti -- ganda dengan satu -
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-');
 };

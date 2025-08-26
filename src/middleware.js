@@ -6,7 +6,7 @@ export default withAuth(
     const { token } = req.nextauth;
     const { pathname } = req.nextUrl;
 
-    if (token && pathname.startsWith('/login')) {
+if (token && (pathname.startsWith('/login') || pathname.startsWith('/register'))) {
       return NextResponse.redirect(new URL('/Home', req.url));
     }
 
@@ -20,7 +20,13 @@ export default withAuth(
   },
   {
     callbacks: {
-      authorized: ({ token }) => !!token,
+      authorized: ({ token, req }) => {
+        const { pathname } = req.nextUrl;
+        if (pathname.startsWith('/admin')) {
+          return !!token;
+        }
+        return true;
+      },
     },
     pages: {
       signIn: '/login',
@@ -32,5 +38,6 @@ export const config = {
   matcher: [
     '/admin/:path*',
     '/login',
+    '/register',
   ],
 };
