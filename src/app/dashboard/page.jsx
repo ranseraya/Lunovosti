@@ -1,17 +1,36 @@
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { redirect } from 'next/navigation';
-import DashboardClientPage from './client-page';
+'use client';
 
-export default async function DashboardPage() {
-  const session = await getServerSession(authOptions);
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-  if (!session || !['ADMIN', 'EDITOR', 'AUTHOR'].includes(session.user.role)) {
-    redirect('/login');
-  }
+const getDashboardPathForRole = (role) => {
+  const userRole = role?.toUpperCase();
+  if (userRole === 'ADMIN') return '/dashboard/admin';
+  if (userRole === 'EDITOR') return '/dashboard/editor';
+  if (userRole === 'AUTHOR') return '/dashboard/author';
+  return '/Home';
+};
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/articles`, { cache: 'no-store' });
-  const articles = await response.json();
+export default function DashboardRedirectPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
-  return <DashboardClientPage articles={articles} />;
+  useEffect(() => {
+    if (status === 'authenticated' && session?.user?.role) {
+      const destination = getDashboardPathForRole(session.user.role);
+      router.replace(destination);
+    }
+
+    if (status === 'unauthenticated') {
+        router.replace('/login');
+    }
+
+  }, [session, status, router]);
+
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <p className="text-lg font-semibold">Redirecting...</p>
+    </div>
+  );
 }

@@ -8,12 +8,12 @@ import Link from "next/link";
 import fotoProfile from "@/assets/profile.jpg";
 
 const getDashboardPathForRole = (role) => {
-  if (!role) return "/";
+  if (!role) return '/Home';
   const userRole = role.toUpperCase();
-  if (["ADMIN", "EDITOR", "AUTHOR"].includes(userRole)) {
-    return "/admin/dashboard";
-  }
-  return "/Home";
+  if (userRole === 'ADMIN') return '/dashboard/admin';
+  if (userRole === 'EDITOR') return '/dashboard/editor';
+  if (userRole === 'AUTHOR') return '/dashboard/author';
+  return '/Home';
 };
 
 export default function AuthButton() {

@@ -26,13 +26,12 @@ export default function LoginPage() {
 
       if (result.error) {
         setError("Incorrect email or password. Please try again.");
+        setIsLoading(false);
       } else {
-        router.push("/admin/dashboard");
-        router.refresh();
+        router.push("/dashboard");
       }
     } catch (error) {
       setError("Terjadi kesalahan yang tidak terduga.");
-    } finally {
       setIsLoading(false);
     }
   };

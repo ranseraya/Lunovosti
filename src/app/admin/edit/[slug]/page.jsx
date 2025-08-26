@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import TiptapEditor from '@/components/TipTapEditor';
+import TiptapEditor from '@/components/TiptapEditor';
 
 export default function EditArticlePage({ params }) {
   const { slug } = params;

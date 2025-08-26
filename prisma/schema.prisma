@@ -200,6 +200,7 @@ enum Role  {
 
 enum Status  {
   draft
+  pending_review
   published
   archived
 }
