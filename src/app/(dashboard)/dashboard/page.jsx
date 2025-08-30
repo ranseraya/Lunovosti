@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const getDashboardPathForRole = (role) => {
   const userRole = role?.toUpperCase();
-  if (userRole === 'ADMIN') return '/dashboard/admin';
-  if (userRole === 'EDITOR') return '/dashboard/editor';
-  if (userRole === 'AUTHOR') return '/dashboard/author';
-  return '/Home';
+  if (userRole === "ADMIN") return "/dashboard/admin";
+  if (userRole === "EDITOR") return "/dashboard/editor";
+  if (userRole === "AUTHOR") return "/dashboard/author";
+  return "/Home";
 };
 
 export default function DashboardRedirectPage() {
@@ -17,15 +17,14 @@ export default function DashboardRedirectPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (status === 'authenticated' && session?.user?.role) {
+    if (status === "authenticated" && session?.user?.role) {
       const destination = getDashboardPathForRole(session.user.role);
       router.replace(destination);
     }
 
-    if (status === 'unauthenticated') {
-        router.replace('/login');
+    if (status === "unauthenticated") {
+      router.replace("/login");
     }
-
   }, [session, status, router]);
 
   return (

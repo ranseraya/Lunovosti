@@ -2,7 +2,7 @@ import CardItem from "@/components/NewCardItem";
 import React from "react";
 import Ads from "@/components/Ads";
 import TagListCategory from "@/components/TagListCategory";
-import prisma from "../../libs/prisma";
+import prisma from "../../../libs/prisma";
 
 
 async function getNewsForCategory(categorySlug) {

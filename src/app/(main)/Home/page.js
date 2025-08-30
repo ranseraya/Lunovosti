@@ -7,7 +7,7 @@ import LatestNewsCategory from '@/components/LatestNewsCategory';
 import HeadlineNews from '@/components/HeadlineNews';
 import RecommendationNews from '@/components/RecommendationNews';
 import TagListCategory from '@/components/TagListCategory';
-import prisma from '../../libs/prisma';
+import prisma from '../../../libs/prisma';
 
 
 async function getHeadlineNews() {

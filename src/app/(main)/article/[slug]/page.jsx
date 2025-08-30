@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from 'next/link';
-import prisma from "../../../libs/prisma";
+import prisma from "../../../../libs/prisma";
 import CommentSection from "@/components/CommentSection";
 import RelatedArticles from "@/components/RelatedArticles";
 import { serializeBigInts } from "@/app/utils/serialize";
